@@ -30,6 +30,8 @@ func download_pkg(
                  .filter{ $0.contains("sha256") }
   if hashes.filter({ $0.contains(version) }).isEmpty {
     hashes = hashes.filter { $0.contains("all") } /* Like ca-cetificates */
+  } else {
+    hashes = hashes.filter { $0.contains(version) }
   }
   let hash_line = hashes.first!.trimmingCharacters(in: .whitespaces)
   let end_index = hash_line.index(before: hash_line.endIndex)
@@ -45,7 +47,7 @@ func download_pkg(
   pkg_urls.insert/*print*/(
     """
     curl -L -H "Authorization: Bearer QQ==" -o \(name).tar.gz \
-    https://ghcr.io/v2/homebrew/core/name/blobs/sha256:\(hash)
+    https://ghcr.io/v2/homebrew/core/\(name)/blobs/sha256:\(hash)
     """
   )
 //  let url = URL(
