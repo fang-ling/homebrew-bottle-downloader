@@ -44,10 +44,14 @@ func download_pkg(
    * https://ghcr.io/v2/homebrew/core/name/blobs/sha256:hash
    */
   pkgs.insert(name)
+  var url_name = name
+  if url_name.contains("@") {
+    url_name = url_name.split(separator: "@").joined(separator: "/")
+  }
   pkg_urls.insert/*print*/(
     """
     curl -L -H "Authorization: Bearer QQ==" -o \(name).tar.gz \
-    https://ghcr.io/v2/homebrew/core/\(name)/blobs/sha256:\(hash)
+    https://ghcr.io/v2/homebrew/core/\(url_name)/blobs/sha256:\(hash)
     """
   )
 //  let url = URL(
